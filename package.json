@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "vue-clean-architecture-example",
   "version": "1.0.0",
   "description": "A reference project demonstrating Clean Architecture principles applied to Vue 3. It shows how to organize code into layers (domain  data  presentation), apply dependency inversion, and structure scalable, testable frontend applications.",
@@ -12,17 +12,18 @@
     "test:coverage": "vitest --coverage"
   },
   "dependencies": {
+    "pinia": "^3.0.3",
     "vue": "^3.4.0",
     "vue-router": "^4.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@vitejs/plugin-vue": "^5.0.0",
+    "@vitest/ui": "^1.0.0",
     "@vue/test-utils": "^2.4.0",
     "jsdom": "^24.0.0",
     "typescript": "^4.9.0",
     "vite": "^5.0.0",
-    "vitest": "^1.0.0",
-    "@vitest/ui": "^1.0.0"
+    "vitest": "^1.0.0"
   }
 }

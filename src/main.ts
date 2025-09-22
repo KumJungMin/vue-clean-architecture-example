@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import App from '@/presentation/App.vue'
 import HomeView from '@/presentation/views/HomeView.vue'
 import AboutView from '@/presentation/views/AboutView.vue'
+import { createPinia } from 'pinia'
 
 const routes = [
   { path: '/', name: 'Home', component: HomeView },
@@ -14,6 +15,9 @@ const router = createRouter({
   routes
 })
 
+const pinia = createPinia()
+
 const app = createApp(App)
 app.use(router)
+app.use(pinia)
 app.mount('#app')
