@@ -20,7 +20,8 @@
       "@/domain/*": ["src/features/domain/*"],
       "@/data/*": ["src/features/data/*"],
       "@/presentation/*": ["src/features/presentation/*"],
-      "@/shared/*": ["src/shared/*"]
+      "@/shared/*": ["src/shared/*"],
+      "smart-schema-converter": ["src/shared/smart-schema-converter"]
     }
   },
   "include": [
