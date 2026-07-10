@@ -51,12 +51,12 @@ export function useSearchAddressVM() {
         setIsLoading(true);
         setErrorMessage('');
 
-        const searchResult = await searchAddressUseCase.execute(request);
+        const searchResult = await searchAddressUseCase(request);
 
         if (searchResult.type === 'success') {
-            await saveAddressUseCase.execute(searchResult.data);
+            await saveAddressUseCase(searchResult.data);
             setResult(searchResult.data);
-            setSavedAddress(await getAddressUseCase.execute());
+            setSavedAddress(await getAddressUseCase());
         } else {
             setResult(null);
             setErrorMessage(searchResult.message);
