@@ -10,7 +10,8 @@ export default defineConfig({
       '@/domain': resolve(__dirname, 'src/features/domain'),
       '@/data': resolve(__dirname, 'src/features/data'),
       '@/presentation': resolve(__dirname, 'src/features/presentation'),
-      '@/shared': resolve(__dirname, 'src/shared')
+      '@/shared': resolve(__dirname, 'src/shared'),
+      'smart-schema-converter': resolve(__dirname, 'src/shared/smart-schema-converter')
     }
   },
   test: {
