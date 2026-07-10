@@ -1,7 +1,7 @@
 import { IAddressRepository } from "@/features/domain/repository/address.repository";
 import { SearchAddressRequest, SearchAddressResponse } from "@/features/domain/model/searchAddress.model";
 import { AddressApiDataSource } from "@/features/data/source/api/address.api";
-import { toSearchAddressRequestDTO, toSearchAddressResponse } from "@/features/data/mapper/address/searchAddress.mapper";
+import { toSearchAddressRequestDTO, toSearchAddressResponse } from "@/features/data/mapper/address/searchAddress.mapper.schema";
 import { AddressDataSource } from "@/features/data/source/store/address.store";
 
 export class AddressRepositoryImpl implements IAddressRepository {

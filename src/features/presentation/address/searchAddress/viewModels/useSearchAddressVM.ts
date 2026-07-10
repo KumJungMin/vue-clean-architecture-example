@@ -1,8 +1,5 @@
-import { ChangeEvent, FormEvent, useMemo, useRef, useState } from 'react';
-import { AddressApiDataSource } from '@/features/data/source/api/address.api';
-import { AddressDataSource } from '@/features/data/source/store/address.store';
-import { createAddressRepository } from '@/features/di/address/repositories';
-import { createGetAddressUseCase, createSaveAddressUseCase, createSearchAddressUseCase } from '@/features/di/address/usecases';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { useAddressUseCases } from '@/features/di/address/usecases';
 import { SearchAddressRequest, SearchAddressResponse } from '@/features/domain/model/searchAddress.model';
 
 const defaultRequest: SearchAddressRequest = {
@@ -12,21 +9,7 @@ const defaultRequest: SearchAddressRequest = {
     country: 'KR'
 };
 
-function useUseCases(addressStoreDataSource: AddressDataSource) {
-    return useMemo(() => {
-        const addressApiDataSource = new AddressApiDataSource();
-        const addressRepository = createAddressRepository(addressApiDataSource, addressStoreDataSource);
-
-        return {
-            searchAddressUseCase: createSearchAddressUseCase(addressRepository),
-            saveAddressUseCase: createSaveAddressUseCase(addressRepository),
-            getAddressUseCase: createGetAddressUseCase(addressRepository)
-        };
-    }, [addressStoreDataSource]);
-}
-
 export function useSearchAddressVM() {
-    const storeDataSourceRef = useRef(new AddressDataSource());
     const [request, setRequest] = useState<SearchAddressRequest>(defaultRequest);
     const [result, setResult] = useState<SearchAddressResponse | null>(null);
     const [savedAddress, setSavedAddress] = useState('');
@@ -36,7 +19,7 @@ export function useSearchAddressVM() {
         searchAddressUseCase,
         saveAddressUseCase,
         getAddressUseCase
-    } = useUseCases(storeDataSourceRef.current);
+    } = useAddressUseCases();
 
     function updateRequest(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const { name, value } = event.target;
