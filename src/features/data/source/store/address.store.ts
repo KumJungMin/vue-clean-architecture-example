@@ -1,11 +1,15 @@
-export class AddressDataSource {
-    private address = '';
+export interface AddressDataSource {
+    getAddress(): string;
+    setAddress(address: string): void;
+}
 
-    getAddress(): string {
-        return this.address;
-    }
+export function createAddressStoreDataSource(): AddressDataSource {
+    let address = '';
 
-    setAddress(address: string): void {
-        this.address = address;
-    }
+    return {
+        getAddress: () => address,
+        setAddress: (nextAddress) => {
+            address = nextAddress;
+        }
+    };
 }

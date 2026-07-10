@@ -1,10 +1,13 @@
-export class ServiceCodeLocalDataSource {
-    // Local data source methods would go here
-    getLanguageCode() {
-        return sessionStorage.getItem('languageCode') || 'en';
-    }
+export interface ServiceCodeLocalDataSource {
+    getLanguageCode(): string;
+    setLanguageCode(code: string): void;
+}
 
-    setLanguageCode(code: string) {
-        sessionStorage.setItem('languageCode', code);
-    }
+export function createServiceCodeLocalDataSource(): ServiceCodeLocalDataSource {
+    return {
+        getLanguageCode: () => sessionStorage.getItem('languageCode') || 'en',
+        setLanguageCode: (code) => {
+            sessionStorage.setItem('languageCode', code);
+        }
+    };
 }
