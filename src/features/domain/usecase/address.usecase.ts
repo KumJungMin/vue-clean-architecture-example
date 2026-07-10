@@ -1,66 +1,41 @@
 import { SearchAddressRequest, SearchAddressResponse } from "../model/searchAddress.model";
 import { IAddressRepository } from "../repository/address.repository";
-import { BaseUseCase } from "./_base/base.usecase";
 
 
-type SearchAddressReturns = 
+export type SearchAddressReturns =
 { type: 'success'; data: SearchAddressResponse } | { type: 'error'; message: string };
 
+export type SearchAddressUseCase = (request: SearchAddressRequest) => Promise<SearchAddressReturns>;
+export type SaveAddressUseCase = (address: SearchAddressResponse) => Promise<void>;
+export type GetAddressUseCase = () => Promise<string>;
 
-export class SearchAddressUseCase extends BaseUseCase<[SearchAddressRequest], SearchAddressReturns> {
-    constructor(private readonly addressRepository: IAddressRepository) {
-        super();
-    }
-
-    protected async run(args: SearchAddressRequest): Promise<SearchAddressReturns> {
-        const result = await this.addressRepository.searchAddress(args);
-
+export async function searchAddressUseCase(
+    addressRepository: IAddressRepository,
+    request: SearchAddressRequest
+): Promise<SearchAddressReturns> {
+    try {
+        const result = await addressRepository.searchAddress(request);
         return { type: 'success', data: result };
-    }
+    } catch (error) {
+        if (isBusinessError(error)) {
+            return { type: 'error', message: error.message };
+        }
 
-    protected handleBusinessError(error: any): SearchAddressReturns {
-        return { type: 'error', message: error.message };
-    }
-
-    protected handleUnexpectedError(): SearchAddressReturns {
         return { type: 'error', message: 'Unexpected error occurred' };
     }
 }
 
-
-export class SaveAddressUseCase extends BaseUseCase<[SearchAddressResponse], void> {
-    constructor(private readonly addressRepository: IAddressRepository) {
-        super();
-    }
-
-    protected async run(address: SearchAddressResponse): Promise<void> {
-        await this.addressRepository.saveAddress(address.detail);
-    }
-
-    protected handleBusinessError(error: any): void {
-        throw error;
-    }
-    
-    protected handleUnexpectedError(error: any): void {
-        throw error;
-    }
+export async function saveAddressUseCase(
+    addressRepository: IAddressRepository,
+    address: SearchAddressResponse
+): Promise<void> {
+    await addressRepository.saveAddress(address.detail);
 }
 
+export async function getAddressUseCase(addressRepository: IAddressRepository): Promise<string> {
+    return addressRepository.getAddress();
+}
 
-export class GetAddressUseCase extends BaseUseCase<[], string> {
-    constructor(private readonly addressRepository: IAddressRepository) {
-        super();
-    }
-
-    protected async run(): Promise<string> {
-        return this.addressRepository.getAddress();
-    }
-
-    protected handleBusinessError(error: any): string {
-        throw error;
-    }
-
-    protected handleUnexpectedError(error: any): string {
-        throw error;
-    }
+function isBusinessError(error: unknown): error is Error {
+    return error instanceof Error && error.name === 'BusinessError';
 }

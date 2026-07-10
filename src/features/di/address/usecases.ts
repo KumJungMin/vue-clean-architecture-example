@@ -1,14 +1,21 @@
 import { IAddressRepository } from '@/features/domain/repository/address.repository';
-import { GetAddressUseCase, SaveAddressUseCase, SearchAddressUseCase } from '@/features/domain/usecase/address.usecase';
+import {
+    GetAddressUseCase,
+    SaveAddressUseCase,
+    SearchAddressUseCase,
+    getAddressUseCase,
+    saveAddressUseCase,
+    searchAddressUseCase
+} from '@/features/domain/usecase/address.usecase';
 
-export function createSearchAddressUseCase(addressRepository: IAddressRepository) {
-    return new SearchAddressUseCase(addressRepository);
+export function createSearchAddressUseCase(addressRepository: IAddressRepository): SearchAddressUseCase {
+    return (request) => searchAddressUseCase(addressRepository, request);
 }
 
-export function createSaveAddressUseCase(addressRepository: IAddressRepository) {
-    return new SaveAddressUseCase(addressRepository);
+export function createSaveAddressUseCase(addressRepository: IAddressRepository): SaveAddressUseCase {
+    return (address) => saveAddressUseCase(addressRepository, address);
 }
 
-export function createGetAddressUseCase(addressRepository: IAddressRepository) {
-    return new GetAddressUseCase(addressRepository);
+export function createGetAddressUseCase(addressRepository: IAddressRepository): GetAddressUseCase {
+    return () => getAddressUseCase(addressRepository);
 }
