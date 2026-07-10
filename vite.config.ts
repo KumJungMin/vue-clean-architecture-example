@@ -1,15 +1,15 @@
 ﻿import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [react()],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
-      '@/domain': resolve(__dirname, 'src/domain'),
-      '@/data': resolve(__dirname, 'src/data'),
-      '@/presentation': resolve(__dirname, 'src/presentation'),
+      '@/domain': resolve(__dirname, 'src/features/domain'),
+      '@/data': resolve(__dirname, 'src/features/data'),
+      '@/presentation': resolve(__dirname, 'src/features/presentation'),
       '@/shared': resolve(__dirname, 'src/shared')
     }
   },
