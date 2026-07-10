@@ -18,7 +18,7 @@ export class AddressRepositoryImpl implements IAddressRepository {
         return new SearchAddressResponseMapper().toDomain(response);
     }
 
-    saveAddress(address: string) {
+    saveAddress(address: string): void {
         this.storeDataSource.setAddress(address);
     }
 

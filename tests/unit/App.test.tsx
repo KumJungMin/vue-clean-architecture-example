@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from '@/features/presentation/App';
 
 describe('App', () => {
-    it('renders the React clean architecture title', () => {
+    it('renders the address search page', () => {
         const container = document.createElement('div');
         const root = createRoot(container);
         (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -13,6 +13,6 @@ describe('App', () => {
             root.render(<App />);
         });
 
-        expect(container.querySelector('h1')?.textContent).toBe('React Clean Architecture Example');
+        expect(container.querySelector('h1')?.textContent).toBe('Address Search');
     });
 });

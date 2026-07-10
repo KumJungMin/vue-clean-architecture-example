@@ -57,25 +57,75 @@ button:disabled {
     margin: 0;
 }
 
-.layer-grid {
+.search-layout {
+    align-items: start;
     display: grid;
-    gap: 16px;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
 }
 
-.layer-card {
+.search-form,
+.result-panel {
     background: #fff;
     border: 1px solid #dde3ee;
     border-radius: 8px;
     padding: 20px;
 }
 
-.layer-card h2 {
-    font-size: 18px;
+.search-form {
+    display: grid;
+    gap: 16px;
+}
+
+.search-form label {
+    color: #384154;
+    display: grid;
+    font-size: 14px;
+    font-weight: 700;
+    gap: 6px;
+}
+
+.search-form input,
+.search-form select {
+    border: 1px solid #c8d1e0;
+    border-radius: 6px;
+    color: #213547;
+    min-height: 42px;
+    padding: 9px 10px;
+}
+
+.result-panel dl {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+}
+
+.result-panel dt {
+    color: #5d667a;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.result-panel dd {
     margin: 0 0 8px;
 }
 
-.layer-card p {
-    color: #5d667a;
+.empty-result,
+.error-message {
     margin: 0;
+}
+
+.error-message {
+    color: #b42318;
+}
+
+@media (max-width: 720px) {
+    .app-shell {
+        padding: 32px 16px;
+    }
+
+    .search-layout {
+        grid-template-columns: 1fr;
+    }
 }

@@ -1,13 +1,14 @@
-import { SearchAddressRequest } from "../model/searchAddress.model";
+import { SearchAddressRequest, SearchAddressResponse } from "../model/searchAddress.model";
+import { IAddressRepository } from "../repository/address.repository";
 import { BaseUseCase } from "./_base/base.usecase";
 
 
 type SearchAddressReturns = 
-{ type: 'success'; data: any } | { type: 'error'; message: string };
+{ type: 'success'; data: SearchAddressResponse } | { type: 'error'; message: string };
 
 
 export class SearchAddressUseCase extends BaseUseCase<[SearchAddressRequest], SearchAddressReturns> {
-    constructor(private readonly addressRepository: any) {
+    constructor(private readonly addressRepository: IAddressRepository) {
         super();
     }
 
@@ -27,13 +28,13 @@ export class SearchAddressUseCase extends BaseUseCase<[SearchAddressRequest], Se
 }
 
 
-export class SaveAddressUseCase extends BaseUseCase<[any], void> {
-    constructor(private readonly addressRepository: any) {
+export class SaveAddressUseCase extends BaseUseCase<[SearchAddressResponse], void> {
+    constructor(private readonly addressRepository: IAddressRepository) {
         super();
     }
 
-    protected async run(args: any): Promise<void> {
-        await this.addressRepository.saveAddress(args);
+    protected async run(address: SearchAddressResponse): Promise<void> {
+        await this.addressRepository.saveAddress(address.detail);
     }
 
     protected handleBusinessError(error: any): void {
@@ -41,6 +42,25 @@ export class SaveAddressUseCase extends BaseUseCase<[any], void> {
     }
     
     protected handleUnexpectedError(error: any): void {
+        throw error;
+    }
+}
+
+
+export class GetAddressUseCase extends BaseUseCase<[], string> {
+    constructor(private readonly addressRepository: IAddressRepository) {
+        super();
+    }
+
+    protected async run(): Promise<string> {
+        return this.addressRepository.getAddress();
+    }
+
+    protected handleBusinessError(error: any): string {
+        throw error;
+    }
+
+    protected handleUnexpectedError(error: any): string {
         throw error;
     }
 }
