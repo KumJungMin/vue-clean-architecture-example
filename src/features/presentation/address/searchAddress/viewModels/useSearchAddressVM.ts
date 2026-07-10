@@ -1,9 +1,9 @@
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
-import { AddressRepositoryImpl } from '@/features/data/repository/address.repositoryImpl';
 import { AddressApiDataSource } from '@/features/data/source/api/address.api';
 import { AddressDataSource } from '@/features/data/source/store/address.store';
+import { createAddressRepository } from '@/features/di/address/repositories';
+import { createGetAddressUseCase, createSaveAddressUseCase, createSearchAddressUseCase } from '@/features/di/address/usecases';
 import { SearchAddressRequest, SearchAddressResponse } from '@/features/domain/model/searchAddress.model';
-import { GetAddressUseCase, SaveAddressUseCase, SearchAddressUseCase } from '@/features/domain/usecase/address.usecase';
 
 const defaultRequest: SearchAddressRequest = {
     searchText: 'Seoul City Hall',
@@ -22,11 +22,11 @@ export function useSearchAddressVM() {
 
     const addressApiDataSource = new AddressApiDataSource();
     const addressStoreDataSource = storeDataSourceRef.current;
-    const addressRepository = new AddressRepositoryImpl(addressApiDataSource, addressStoreDataSource);
+    const addressRepository = createAddressRepository(addressApiDataSource, addressStoreDataSource);
 
-    const searchAddressUseCase = new SearchAddressUseCase(addressRepository);
-    const saveAddressUseCase = new SaveAddressUseCase(addressRepository);
-    const getAddressUseCase = new GetAddressUseCase(addressRepository);
+    const searchAddressUseCase = createSearchAddressUseCase(addressRepository);
+    const saveAddressUseCase = createSaveAddressUseCase(addressRepository);
+    const getAddressUseCase = createGetAddressUseCase(addressRepository);
 
     function updateRequest(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const { name, value } = event.target;
