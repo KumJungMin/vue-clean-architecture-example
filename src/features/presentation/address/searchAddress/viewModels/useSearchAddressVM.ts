@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useMemo, useRef, useState } from 'react';
 import { AddressApiDataSource } from '@/features/data/source/api/address.api';
 import { AddressDataSource } from '@/features/data/source/store/address.store';
 import { createAddressRepository } from '@/features/di/address/repositories';
@@ -12,6 +12,19 @@ const defaultRequest: SearchAddressRequest = {
     country: 'KR'
 };
 
+function useUseCases(addressStoreDataSource: AddressDataSource) {
+    return useMemo(() => {
+        const addressApiDataSource = new AddressApiDataSource();
+        const addressRepository = createAddressRepository(addressApiDataSource, addressStoreDataSource);
+
+        return {
+            searchAddressUseCase: createSearchAddressUseCase(addressRepository),
+            saveAddressUseCase: createSaveAddressUseCase(addressRepository),
+            getAddressUseCase: createGetAddressUseCase(addressRepository)
+        };
+    }, [addressStoreDataSource]);
+}
+
 export function useSearchAddressVM() {
     const storeDataSourceRef = useRef(new AddressDataSource());
     const [request, setRequest] = useState<SearchAddressRequest>(defaultRequest);
@@ -19,14 +32,11 @@ export function useSearchAddressVM() {
     const [savedAddress, setSavedAddress] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-
-    const addressApiDataSource = new AddressApiDataSource();
-    const addressStoreDataSource = storeDataSourceRef.current;
-    const addressRepository = createAddressRepository(addressApiDataSource, addressStoreDataSource);
-
-    const searchAddressUseCase = createSearchAddressUseCase(addressRepository);
-    const saveAddressUseCase = createSaveAddressUseCase(addressRepository);
-    const getAddressUseCase = createGetAddressUseCase(addressRepository);
+    const {
+        searchAddressUseCase,
+        saveAddressUseCase,
+        getAddressUseCase
+    } = useUseCases(storeDataSourceRef.current);
 
     function updateRequest(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const { name, value } = event.target;
